@@ -44,11 +44,11 @@ pub fn export_graph_data(path: &dyn AsRef<Path>, first_edge: EdgeIds, target_nod
     let output_file = File::create(path);
 
     if let Ok(mut file) = output_file {
-        writeln!(&mut file, "p sp {} {}", first_edge.len(), target_node.len());
+        writeln!(&mut file, "p sp {} {}", first_edge.len(), target_node.len()).unwrap();
 
         for node_id in 0..first_edge.len() {
             for edge_id in first_edge[node_id]..first_edge[node_id + 1] {
-                writeln!(&mut file, "a {} {} {}", node_id, target_node[edge_id as usize], weights[edge_id as usize]);
+                writeln!(&mut file, "a {} {} {}", node_id, target_node[edge_id as usize], weights[edge_id as usize]).unwrap();
             }
         }
     }
