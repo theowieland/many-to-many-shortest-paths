@@ -1,10 +1,10 @@
 use std::{path::Path, fs::File};
-use std::io::{BufRead, BufReader};
+use std::io::{BufRead, BufReader, Write};
 use crate::types::*;
 
-pub fn read_graph_data(path: &dyn AsRef<Path>) -> Option<(FirstEdges, NodeIds, Weights)>{
-    let read_file = File::open(path);
-    if let Ok(file) = read_file {
+pub fn read_graph_data(path: &dyn AsRef<Path>) -> Option<(EdgeIds, NodeIds, Weights)>{
+    let input_file = File::open(path);
+    if let Ok(file) = input_file {
         let reader = BufReader::new(file);
 
         let mut arcs: Vec<Vec<(NodeId, Weight)>> = Vec::new();
@@ -40,6 +40,20 @@ pub fn read_graph_data(path: &dyn AsRef<Path>) -> Option<(FirstEdges, NodeIds, W
     None
 }
 
+pub fn export_graph_data(path: &dyn AsRef<Path>, first_edge: EdgeIds, target_node: NodeIds, weights: Weights) {
+    let output_file = File::create(path);
+
+    if let Ok(mut file) = output_file {
+        writeln!(&mut file, "p sp {} {}", first_edge.len(), target_node.len());
+
+        for node_id in 0..first_edge.len() {
+            for edge_id in first_edge[node_id]..first_edge[node_id + 1] {
+                writeln!(&mut file, "a {} {} {}", node_id, target_node[edge_id as usize], weights[edge_id as usize]);
+            }
+        }
+    }
+}
+
 fn is_graph_size_line(line: &String) -> bool {
     line.starts_with("p sp")
 }
@@ -48,8 +62,8 @@ fn is_arc_line(line: &String) -> bool {
     line.starts_with("a")
 }
 
-fn convert_vec_to_adjacency_array(num_vertices: usize, arcs: &Vec<Vec<(NodeId, Weight)>>) -> (FirstEdges, NodeIds, Weights) {
-    let mut first_edge: FirstEdges = vec![0; num_vertices + 1];
+fn convert_vec_to_adjacency_array(num_vertices: usize, arcs: &Vec<Vec<(NodeId, Weight)>>) -> (EdgeIds, NodeIds, Weights) {
+    let mut first_edge: EdgeIds = vec![0; num_vertices + 1];
     let mut arc_target: NodeIds = Vec::new();
     let mut arc_weight: Weights = Vec::new();
 
