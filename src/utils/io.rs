@@ -2,26 +2,27 @@ use std::{path::Path, fs::File};
 use std::io::{BufRead, BufReader, Write};
 use crate::types::*;
 
-pub fn read_graph_data(path: &dyn AsRef<Path>) -> Option<(EdgeIds, NodeIds, Weights)>{
+pub fn read_graph_data(path: &dyn AsRef<Path>) -> Option<(EdgeIds, NodeIds, Weights, Ranks)>{
     let input_file = File::open(path);
     if let Ok(file) = input_file {
         let reader = BufReader::new(file);
 
         let mut arcs: Vec<Vec<(NodeId, Weight)>> = Vec::new();
         let mut num_nodes = 0;
+        let mut ranks: Ranks = Vec::new();
 
         for line in reader.lines() {
             if let Ok(string_line) = line {
-                if is_graph_size_line(&string_line) {
-                    let split = string_line.split(" ").collect::<Vec<&str>>();
+                let split = string_line.split(" ").collect::<Vec<&str>>();
 
+                if is_graph_size_line(&string_line) {
                     num_nodes = split[2].parse().unwrap();
 
-                    arcs = vec![Vec::new(); num_nodes];
+                    arcs.resize(num_nodes, Vec::new());
+                    ranks.resize(num_nodes, 0);
+
                 }
                 else if is_arc_line(&string_line) {
-                    let split = string_line.split(" ").collect::<Vec<&str>>();
-
                     let source_node: NodeId = split[1].parse().unwrap();
                     let target_node: NodeId = split[2].parse().unwrap();
                     let arc_weight: Weight = split[3].parse().unwrap();
@@ -29,12 +30,18 @@ pub fn read_graph_data(path: &dyn AsRef<Path>) -> Option<(EdgeIds, NodeIds, Weig
                     // reduce source and target node ids by one so that they are zero based
                     arcs[(source_node - 1) as usize].push((target_node - 1, arc_weight));
                 }
+                else if is_rank_line(&string_line) {
+                    let node_id: NodeId = split[1].parse().unwrap();
+                    let rank: usize = split[2].parse().unwrap();
+
+                    ranks[node_id as usize] = rank;
+                }
             }
         }
 
         // convert arcs to adjacency array representation
-        let converted_result = convert_vec_to_adjacency_array(num_nodes, &arcs);
-        return Some(converted_result);
+        let (first_out, target_node, weight) = convert_vec_to_adjacency_array(num_nodes, &arcs);
+        return Some((first_out, target_node, weight, ranks));
     }
 
     None
@@ -60,6 +67,10 @@ fn is_graph_size_line(line: &String) -> bool {
 
 fn is_arc_line(line: &String) -> bool {
     line.starts_with("a")
+}
+
+fn is_rank_line(line: &String) -> bool {
+    line.starts_with("r")
 }
 
 fn convert_vec_to_adjacency_array(num_vertices: usize, arcs: &Vec<Vec<(NodeId, Weight)>>) -> (EdgeIds, NodeIds, Weights) {
