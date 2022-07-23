@@ -9,7 +9,7 @@ pub fn read_graph_data(path: &dyn AsRef<Path>) -> Option<(EdgeIds, NodeIds, Weig
 
         let mut arcs: Vec<Vec<(NodeId, Weight)>> = Vec::new();
         let mut num_nodes = 0;
-        let mut ranks: Ranks = Vec::new();
+        let mut rank: Ranks = Vec::new();
 
         for line in reader.lines() {
             if let Ok(string_line) = line {
@@ -19,7 +19,7 @@ pub fn read_graph_data(path: &dyn AsRef<Path>) -> Option<(EdgeIds, NodeIds, Weig
                     num_nodes = split[2].parse().unwrap();
 
                     arcs.resize(num_nodes, Vec::new());
-                    ranks.resize(num_nodes, 0);
+                    rank.resize(num_nodes, 0);
 
                 }
                 else if is_arc_line(&string_line) {
@@ -32,22 +32,22 @@ pub fn read_graph_data(path: &dyn AsRef<Path>) -> Option<(EdgeIds, NodeIds, Weig
                 }
                 else if is_rank_line(&string_line) {
                     let node_id: NodeId = split[1].parse().unwrap();
-                    let rank: usize = split[2].parse().unwrap();
+                    let node_rank: usize = split[2].parse().unwrap();
 
-                    ranks[node_id as usize] = rank;
+                    rank[node_id as usize] = node_rank;
                 }
             }
         }
 
         // convert arcs to adjacency array representation
         let (first_out, target_node, weight) = convert_vec_to_adjacency_array(num_nodes, &arcs);
-        return Some((first_out, target_node, weight, ranks));
+        return Some((first_out, target_node, weight, rank));
     }
 
     None
 }
 
-pub fn export_graph_data(path: &dyn AsRef<Path>, first_edge: EdgeIds, target_node: NodeIds, weights: Weights) {
+pub fn export_graph_data(path: &dyn AsRef<Path>, first_edge: EdgeIds, target_node: NodeIds, weight: Weights, rank: Ranks) {
     let output_file = File::create(path);
 
     if let Ok(mut file) = output_file {
@@ -55,8 +55,12 @@ pub fn export_graph_data(path: &dyn AsRef<Path>, first_edge: EdgeIds, target_nod
 
         for node_id in 0..first_edge.len() {
             for edge_id in first_edge[node_id]..first_edge[node_id + 1] {
-                writeln!(&mut file, "a {} {} {}", node_id, target_node[edge_id as usize], weights[edge_id as usize]).unwrap();
+                writeln!(&mut file, "a {} {} {}", node_id, target_node[edge_id as usize], weight[edge_id as usize]).unwrap();
             }
+        }
+
+        for node_id in 0..first_edge.len() {
+            writeln!(&mut file, "r {} {}", node_id, rank[node_id]).unwrap();
         }
     }
 }
