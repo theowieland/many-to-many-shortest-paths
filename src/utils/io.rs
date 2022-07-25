@@ -1,6 +1,42 @@
+use std::{mem, slice};
 use std::{path::Path, fs::File};
-use std::io::{BufRead, BufReader, Write};
+use std::io::{BufRead, BufReader, Write, Result, Read};
+use std::fs::metadata;
+
 use crate::types::*;
+
+pub fn read_node_ids<P: AsRef<Path>>(path: P) -> Option<NodeIds> {
+    let input_file = File::open(path);
+
+    if let Ok(file) = input_file {
+        let metadata = metadata(path.as_ref()).unwrap();
+
+        let num_node_ids = metadata.len() as usize / mem::size_of::<NodeId>();
+        let node_ids: NodeIds = vec![0; num_node_ids];
+
+        let num_bytes = metadata.len() as usize;
+        let mut bytes;
+        unsafe {
+            bytes = slice::from_raw_parts_mut(node_ids.as_mut_ptr() as *mut u8, num_bytes);
+        }
+
+        file.read_exact(bytes);
+
+        return Some(node_ids);
+    }
+
+    None
+}
+
+pub fn export_node_ids(path: &dyn AsRef<Path>, node_ids: &NodeIds) -> Result<()> {
+    let num_bytes = node_ids.len() * mem::size_of::<NodeId>();
+    let mut bytes;
+    unsafe {
+        bytes = slice::from_raw_parts_mut(node_ids.as_mut_ptr() as *mut u8, num_bytes);
+    }
+    
+    File::create(path)?.write_all(bytes)
+}
 
 pub fn read_graph_data(path: &dyn AsRef<Path>) -> Option<(EdgeIds, NodeIds, Weights, Ranks)>{
     let input_file = File::open(path);
