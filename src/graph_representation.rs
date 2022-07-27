@@ -72,14 +72,14 @@ impl GraphList {
 impl Graph for GraphArray {
 
     fn add_edge(&mut self, start: NodeId, end: NodeId, weight: Weight) {
-        let current_first_edge: EdgeId = self.first_edge[start];
+        let current_first_edge: EdgeId = self.first_edge[start as usize];
 
         // insert new target node and weight
-        self.target_node.insert(current_first_edge, end);
-        self.weights.insert(current_first_edge, weight);
+        self.target_node.insert(current_first_edge as usize, end);
+        self.weights.insert(current_first_edge as usize, weight);
 
         // increase all subsequent first edge ids
-        for node_id in (start +1)..self.first_edge.len() {
+        for node_id in (start as usize + 1)..self.first_edge.len() {
             self.first_edge[node_id] += 1;
         }
     }
