@@ -24,13 +24,13 @@ pub struct RPHAST {
 impl RPHAST {
 
     pub fn new(
-        fwd_first_edge: &Vec<EdgeId>, 
-        fwd_head: &Vec<NodeId>, 
-        fwd_weight: &Vec<Weight>, 
-        bwd_first_edge: &Vec<EdgeId>, 
-        bwd_head: &Vec<NodeId>, 
-        bwd_weight: &Vec<Weight>, 
-        ranks: &Vec<usize>
+        fwd_first_edge: &EdgeIds, 
+        fwd_head: &NodeIds, 
+        fwd_weight: &Weights, 
+        bwd_first_edge: &EdgeIds, 
+        bwd_head: &NodeIds, 
+        bwd_weight: &Weights, 
+        ranks: &Ranks
     ) -> Self {
         let num_vertices = fwd_first_edge.len() - 1;
 

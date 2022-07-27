@@ -91,7 +91,7 @@ fn fill_restricted_arrays(discovered_nodes: &Vec<NodeId>, translation_table: &Va
     restricted_first_edge[discovered_nodes.len()] = first_edge_index;
 }
 
-pub fn convert_to_arclist(head: &Vec<NodeId>, weight: &Vec<Weight>) -> Vec<(NodeId, Weight)> {
+pub fn convert_to_arclist(head: &NodeIds, weight: &Weights) -> Vec<(NodeId, Weight)> {
     let mut arclist = Vec::new();
     for (node_id, weight) in head.iter().zip(weight.iter()) {
         arclist.push((*node_id, *weight));
