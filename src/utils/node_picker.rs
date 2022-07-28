@@ -35,7 +35,7 @@ impl<'a> CachedNodePicker<'a> {
     pub fn get_sources(&self, iteration: usize, ball_size: usize, source_target_size: &str) -> Vec<NodeId> {
         let file_name = format!("{}/{}/{}/iteration_{}_ball_size_{}", self.path.display(), source_target_size, "sources", iteration, ball_size);
 
-        let nodes: NodeIds = read_node_ids(Path::new(&file_name)).unwrap();
+        let nodes: NodeIds = read_node_ids(&Path::new(&file_name)).unwrap();
 
         nodes
     }
@@ -43,7 +43,7 @@ impl<'a> CachedNodePicker<'a> {
     pub fn get_targets(&self, iteration: usize, ball_size: usize, source_target_size: &str) -> Vec<NodeId> {
         let file_name = format!("{}/{}/{}/iteration_{}_ball_size_{}", self.path.display(), source_target_size, "targets", iteration, ball_size);
         
-        let nodes: NodeIds = read_node_ids(Path::new(&file_name)).unwrap();
+        let nodes: NodeIds = read_node_ids(&Path::new(&file_name)).unwrap();
 
         nodes
     }
@@ -112,7 +112,7 @@ impl NodePicker {
     
         //shuffle the result and extract sample_size nodes
         visited.shuffle(&mut thread_rng());
-        let mut result_nodes = visited[0..sample_size].to_vec();
+        let result_nodes = visited[0..sample_size].to_vec();
 
         result_nodes
     }

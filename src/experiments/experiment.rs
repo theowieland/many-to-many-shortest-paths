@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use crate::{types::{EdgeId, NodeId, Weight, EdgeIds, NodeIds, Weights, Ranks}, many_to_many::{many_to_many_algorithm::ManyToManyAlgorithm, bucket::BucketManyToMany, advanced_bucket::AdvancedBucketManyToMany, rphast::RPHAST, rphast_multiple_trees_fwd_rank::RPHASTMultipleTreesFwdRank, rphast_multiple_trees_fwd_dijkstra::RPHASTMultipleTreesFwdDijkstra, rphast_multiple_trees_fwd_buckets::RPHASTMultipleTreesFwdBuckets, rphast_simd::SIMDRPHAST, rphast_batched_simd::BatchedSIMDRPHAST, hub_labels_partially_pruned::HubLabelsPartiallyPruned, hub_labels_top_down::HubLabelsTopDown, lazy_simd::LazySIMD, lazy_batched_buckets::LazyBatchedBuckets, lazy::LazyRPHAST, dijkstra::DijkstraManyToMany, advanced_bucket_batched::AdvancedBucketBatchedManyToMany, forward_backward_buckets_merged::ForwardBackwardBucketsMergedManyToMany, lazy_one_to_many::LazyRPHASTOneToMany}, utils::{combine_restricted_graph, node_picker::CachedNodePicker, io::read_graph_data, create_restricted_graph}, time::measure};
+use crate::{types::{EdgeId, NodeId, Weight, EdgeIds, NodeIds, Weights, Ranks}, many_to_many::{many_to_many_algorithm::ManyToManyAlgorithm, bucket::BucketManyToMany, advanced_bucket::AdvancedBucketManyToMany, rphast::RPHAST, rphast_multiple_trees_fwd_rank::RPHASTMultipleTreesFwdRank, rphast_multiple_trees_fwd_dijkstra::RPHASTMultipleTreesFwdDijkstra, rphast_multiple_trees_fwd_buckets::RPHASTMultipleTreesFwdBuckets, rphast_simd::SIMDRPHAST, rphast_batched_simd::BatchedSIMDRPHAST, hub_labels_partially_pruned::HubLabelsPartiallyPruned, hub_labels_top_down::HubLabelsTopDown, lazy_simd::LazySIMD, lazy_batched_buckets::LazyBatchedBuckets, lazy::LazyRPHAST, dijkstra::DijkstraManyToMany, advanced_bucket_batched::AdvancedBucketBatchedManyToMany, forward_backward_buckets_merged::ForwardBackwardBucketsMergedManyToMany, lazy_one_to_many::LazyRPHASTOneToMany}, utils::{combine_restricted_graph, io::read_graph_data, create_restricted_graph, measure_time, node_picker::CachedNodePicker}};
 
 pub struct Experiment {
     pub name: String, // a unique identifier for this experiment
@@ -84,7 +84,7 @@ impl Experiment {
                         algorithm.initialize(&sources, &targets);
                         algorithm.select(&sources, &targets);
                         
-                        let (_, query_time) = measure(|| {
+                        let query_time = measure_time(|| {
                             algorithm.query(&sources, &targets);
                         });
                         
@@ -105,7 +105,7 @@ impl Experiment {
                         algorithm.initialize(&sources, &targets);
                         algorithm.select_targets_decreasing_rank(&targets);
                         
-                        let (_, query_time) = measure(|| {
+                        let query_time = measure_time(|| {
                             algorithm.query(&sources, &targets);
                         });
                         
@@ -123,7 +123,7 @@ impl Experiment {
                 for ball_size in &source_target_configuration.ball_sizes {
                     for iteration in 0..variables.num_iterations {
                         let (sources, targets) = get_sources_and_targets(&mut data.node_picker, iteration, *ball_size, &source_target_configuration.folder);
-                        let (_, query_time) = measure(|| {
+                        let query_time = measure_time(|| {
                             algorithm.initialize(&sources, &targets);
                             algorithm.populate_buckets(&sources, &targets);
                             let visited = algorithm.calculate_mutual_buckets();

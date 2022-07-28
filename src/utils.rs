@@ -1,8 +1,11 @@
+use std::time::{Duration, Instant};
+
 use crate::types::*;
 use crate::data_structures::{ValidFlags, ArrayStructure};
 
 pub mod binary_heap;
 pub mod io;
+pub mod node_picker;
 
 /// creates a restricted graph by only adding edges whoose head node have a higher rank than the source node's rank
 pub fn create_restricted_graph(first_out: &EdgeIds, head: &NodeIds, weight: &Weights, ranks: &Ranks) -> (EdgeIds, NodeIds, Weights, EdgeIds, NodeIds, Weights) {
@@ -155,4 +158,11 @@ pub fn depth_first_search(
             }
         }
     }
+}
+
+pub fn measure_time<F: FnOnce()>(function: F) -> Duration {
+    let start = Instant::now();
+    let result = function();
+    
+    start.elapsed()
 }
