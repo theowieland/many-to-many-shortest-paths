@@ -65,10 +65,8 @@ impl NodePicker {
 
     /// picks a random start node to run dijkstra's algorithm from until a given amount of nodes has been settled
     /// returns all settled nodes
-    pub fn grow_random_dijkstras_ball(&mut self, ball_size: usize) -> Vec<NodeId> {
+    pub fn grow_random_dijkstras_ball(&mut self, center: NodeId, ball_size: usize) -> Vec<NodeId> {
         let mut settled: Vec<NodeId> = Vec::new();
-
-        let center = self.get_random_node();
 
         self.to_visit.clear();
         self.to_visit.insert(DijkstraState {distance: 0, node_id: center});
@@ -108,7 +106,7 @@ impl NodePicker {
     pub fn get_random_nodes(&mut self, center: NodeId, ball_size: usize, sample_size: usize) -> Vec<NodeId> {
         assert!(ball_size >= sample_size);
 
-        let mut visited: Vec<NodeId> = self.grow_random_dijkstras_ball(ball_size);
+        let mut visited: Vec<NodeId> = self.grow_random_dijkstras_ball(center, ball_size);
     
         //shuffle the result and extract sample_size nodes
         visited.shuffle(&mut thread_rng());
@@ -123,15 +121,15 @@ impl NodePicker {
     pub fn get_two_random_sets(&mut self, center: NodeId, ball_size: usize, sources: usize, targets: usize) -> (Vec<NodeId>, Vec<NodeId>) {
         assert!(ball_size >= sources && ball_size >= targets);
 
-        let mut visited: Vec<NodeId> = self.grow_random_dijkstras_ball(ball_size);
+        let mut visited: Vec<NodeId> = self.grow_random_dijkstras_ball(center, ball_size);
     
         //shuffle the result and extract source nodes
         visited.shuffle(&mut thread_rng());
-        let mut result_sources = visited[0..sources].to_vec();
+        let result_sources = visited[0..sources].to_vec();
 
         //shuffle the result and extract target nodes
         visited.shuffle(&mut thread_rng());
-        let mut result_targets = visited[0..targets].to_vec();
+        let result_targets = visited[0..targets].to_vec();
 
         (result_sources, result_targets)
     }
@@ -142,13 +140,12 @@ impl NodePicker {
     pub fn get_random_nodes_and_another_single_random_node(&mut self, ball_size: usize, sample_size: usize) -> (NodeId, Vec<NodeId>) {
         assert!(ball_size >= sample_size);
 
-        let mut settled = self.grow_random_dijkstras_ball(ball_size);
+        let mut settled = self.grow_random_dijkstras_ball(self.get_random_node(), ball_size);
     
         // shuffle the result and extract sample_size nodes
         let mut rng = rand::thread_rng();
         settled.shuffle(&mut rng);
-        let mut result_nodes = settled[0..sample_size].to_vec();
-
+        let result_nodes = settled[0..sample_size].to_vec();
         let random_single_node = settled[rng.gen_range(0..settled.len()) as usize] as NodeId;
 
         (random_single_node, result_nodes)
@@ -160,13 +157,12 @@ impl NodePicker {
     pub fn get_random_nodes_and_separate_single_random_node(&mut self, ball_size: usize, sample_size: usize) -> (NodeId, Vec<NodeId>) {
         assert!(ball_size >= sample_size);
 
-        let mut settled = self.grow_random_dijkstras_ball(ball_size);
+        let mut settled = self.grow_random_dijkstras_ball(self.get_random_node(), ball_size);
     
         // shuffle the result and extract sample_size nodes
         let mut rng = rand::thread_rng();
         settled.shuffle(&mut rng);
-        let mut result_nodes = settled[0..sample_size].to_vec();
-
+        let result_nodes = settled[0..sample_size].to_vec();
         let random_single_node = self.get_random_node();
 
         (random_single_node, result_nodes)
