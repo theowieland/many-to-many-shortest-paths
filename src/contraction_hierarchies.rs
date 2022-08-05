@@ -62,7 +62,7 @@ impl ContractionHierarchiesGraph {
         for node_index in 0..num_nodes {
             first_edge[node_index] = first_edge_index;
 
-            for (adj_node, arc_weight) in &self.remaining_out_edges[node_index] {
+            for (adj_node, arc_weight) in &self.result_out_edges[node_index] {
                 target_node.push(*adj_node);
                 weight.push(*arc_weight);
 
