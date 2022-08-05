@@ -96,7 +96,7 @@ pub fn export_graph_data(path: &dyn AsRef<Path>, first_edge: EdgeIds, target_nod
             }
         }
 
-        for node_id in 0..first_edge.len() {
+        for node_id in 0..num_nodes {
             writeln!(&mut file, "r {} {}", node_id, rank[node_id]).unwrap();
         }
     }
