@@ -25,6 +25,10 @@ impl<T: HeapElement + Ord> MinBinaryHeap<T> {
         self.data.len()    
     }
 
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+
     pub fn insert(&mut self, entry: T) {
         let initial_index = self.data.len();
         let entry_unique_id = entry.unique_index();
@@ -80,6 +84,24 @@ impl<T: HeapElement + Ord> MinBinaryHeap<T> {
         Some(min_element)
     } 
 
+    pub fn get_by_unique_index(&mut self, unique_index: usize) -> Option<&mut T> {
+        let position = self.indices[unique_index];
+
+        Some(&mut self.data[position])
+    }
+
+    pub fn remove_by_unique_index(&mut self, unique_index: usize) -> Option<T> {
+        let position = self.indices[unique_index];
+
+        self.swap(position, self.len() -1); // move last element to current postion
+        let element = self.data.pop();
+        self.indices[unique_index] = INVALID_POSITION;
+
+        self.sift_down(position);
+
+        element
+    }
+
     pub fn contains_unique_index(&mut self, unique_index: usize) -> bool {
         self.indices[unique_index] != INVALID_POSITION
     }
@@ -101,7 +123,6 @@ impl<T: HeapElement + Ord> MinBinaryHeap<T> {
     }
 
     fn sift_down(&mut self, index: usize) {
-        
         let mut current_index = index;
 
         while current_index < self.len() {

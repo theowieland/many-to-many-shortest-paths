@@ -7,6 +7,55 @@ pub mod binary_heap;
 pub mod io;
 pub mod node_picker;
 
+
+// removes all loops as well as duplicate arcs (only the arc with minimum weight remains)
+pub fn remove_unecessary_arcs(first_out: &EdgeIds, head: &NodeIds, weight: &Weights) -> (EdgeIds, NodeIds, Weights) {
+    let num_vertices = first_out.len() - 1;
+
+    let mut arcs: Vec<Vec<(NodeId, Weight)>> = vec![Vec::new(); num_vertices];
+
+    for node_id in 0..num_vertices {
+        for edge_id in first_out[node_id]..first_out[node_id + 1] {
+            let target_node = head[edge_id as usize];
+            let edge_weight = weight[edge_id as usize];
+
+            // a simple loop -> not required to calculate shortest paths
+            if target_node == node_id as NodeId { 
+                continue;
+            }
+
+            arcs[node_id].push((target_node, edge_weight));
+        }
+    }
+
+    // sort all arcs by target_node and after that edges by weight
+    for node_id in 0..num_vertices {
+        arcs[node_id].sort_by_key(|(target_node, weight)| (*target_node, *weight));
+        arcs[node_id].dedup_by_key(|(target_node, _weight)| *target_node);
+    }
+
+    let mut result_first_edge = vec![0; num_vertices + 1];
+    let mut result_head = Vec::new();
+    let mut result_weight = Vec::new();
+
+    let mut first_edge_index = 0;
+
+    for node_index in 0..num_vertices {
+        result_first_edge[node_index] = first_edge_index;
+
+        for (adj_node, weight) in &arcs[node_index] {
+            result_head.push(*adj_node);
+            result_weight.push(*weight);
+
+            first_edge_index += 1;
+        }
+    }
+
+    result_first_edge[num_vertices] = first_edge_index;
+
+    (result_first_edge, result_head, result_weight)
+}
+
 /// creates a restricted graph by only adding edges whoose head node have a higher rank than the source node's rank
 pub fn create_restricted_graph(first_out: &EdgeIds, head: &NodeIds, weight: &Weights, ranks: &Ranks) -> (EdgeIds, NodeIds, Weights, EdgeIds, NodeIds, Weights) {
     let num_vertices = first_out.len() - 1;
@@ -162,7 +211,7 @@ pub fn depth_first_search(
 
 pub fn measure_time<F: FnOnce()>(function: F) -> Duration {
     let start = Instant::now();
-    let result = function();
+    let _result = function();
     
     start.elapsed()
 }
