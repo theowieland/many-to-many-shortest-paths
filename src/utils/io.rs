@@ -85,11 +85,12 @@ pub fn read_graph_data(path: &dyn AsRef<Path>) -> Option<(EdgeIds, NodeIds, Weig
 
 pub fn export_graph_data(path: &dyn AsRef<Path>, first_edge: EdgeIds, target_node: NodeIds, weight: Weights, rank: Ranks) {
     let output_file = File::create(path);
+    let num_nodes = first_edge.len() - 1;
 
     if let Ok(mut file) = output_file {
         writeln!(&mut file, "p sp {} {}", first_edge.len(), target_node.len()).unwrap();
 
-        for node_id in 0..first_edge.len() {
+        for node_id in 0..num_nodes {
             for edge_id in first_edge[node_id]..first_edge[node_id + 1] {
                 writeln!(&mut file, "a {} {} {}", node_id, target_node[edge_id as usize], weight[edge_id as usize]).unwrap();
             }
