@@ -209,9 +209,9 @@ pub fn depth_first_search(
     }
 }
 
-pub fn measure_time<F: FnOnce()>(function: F) -> Duration {
+pub fn measure_time<T, F: FnOnce() -> T>(function: F) -> (Duration, T) {
     let start = Instant::now();
-    let _result = function();
+    let result = function();
     
-    start.elapsed()
+    (start.elapsed(), result)
 }
