@@ -13,12 +13,9 @@ pub mod witness_search;
 pub mod contraction_hierarchies;
 pub mod graph_algorithms;
 pub mod utils;
-pub mod updated_witness_search;
 pub mod data_structures;
 pub mod bucket_containers;
 pub mod graph_permutations;
 
 pub mod many_to_many;
 pub mod experiments;
-
-pub mod new_contraction_hierarchies;

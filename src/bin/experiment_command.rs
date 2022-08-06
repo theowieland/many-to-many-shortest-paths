@@ -133,16 +133,16 @@ fn main() {
                                 for iteration in 0..experiment.num_iterations {
                                     let (sources, targets) = get_sources_and_targets(&mut data.node_picker, iteration, *ball_size, &configuration.folder);
 
-                                    let select_time = measure_time(|| {
+                                    let (select_time, _result) = measure_time(|| {
                                         algorithm.initialize(&sources, &targets);
                                         algorithm.select(&sources, &targets);
                                     });
 
-                                    let query_time = measure_time(|| algorithm.query(&sources, &targets));
+                                    let (query_time, _result) = measure_time(|| algorithm.query(&sources, &targets));
         
                                     println!("{},{:?},{:?}", ball_size, select_time.as_nanos(), query_time.as_nanos());
                                 }
-                            }
+                            } 
                         }
                     }
                 }

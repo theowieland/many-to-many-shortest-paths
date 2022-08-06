@@ -38,7 +38,7 @@ pub fn export_node_ids(path: &dyn AsRef<Path>, node_ids: &NodeIds) -> Result<()>
     File::create(path)?.write_all(bytes)
 }
 
-pub fn read_graph_data(path: &dyn AsRef<Path>) -> Option<(EdgeIds, NodeIds, Weights, Ranks)>{
+pub fn read_graph_data(path: &dyn AsRef<Path>) -> Option<(EdgeIds, NodeIds, Weights, Ranks)> {
     let input_file = File::open(path);
     if let Ok(file) = input_file {
         let reader = BufReader::new(file);

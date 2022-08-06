@@ -84,7 +84,7 @@ impl Experiment {
                         algorithm.initialize(&sources, &targets);
                         algorithm.select(&sources, &targets);
                         
-                        let query_time = measure_time(|| {
+                        let (query_time, _result) = measure_time(|| {
                             algorithm.query(&sources, &targets);
                         });
                         
@@ -105,7 +105,7 @@ impl Experiment {
                         algorithm.initialize(&sources, &targets);
                         algorithm.select_targets_decreasing_rank(&targets);
                         
-                        let query_time = measure_time(|| {
+                        let (query_time, _result) = measure_time(|| {
                             algorithm.query(&sources, &targets);
                         });
                         
@@ -123,7 +123,7 @@ impl Experiment {
                 for ball_size in &source_target_configuration.ball_sizes {
                     for iteration in 0..variables.num_iterations {
                         let (sources, targets) = get_sources_and_targets(&mut data.node_picker, iteration, *ball_size, &source_target_configuration.folder);
-                        let query_time = measure_time(|| {
+                        let (query_time, _result) = measure_time(|| {
                             algorithm.initialize(&sources, &targets);
                             algorithm.populate_buckets(&sources, &targets);
                             let visited = algorithm.calculate_mutual_buckets();
