@@ -70,7 +70,7 @@ pub fn read_graph_data(path: &dyn AsRef<Path>) -> Option<(EdgeIds, NodeIds, Weig
                     let node_id: NodeId = split[1].parse().unwrap();
                     let node_rank: usize = split[2].parse().unwrap();
 
-                    rank[node_id as usize] = node_rank;
+                    rank[node_id as usize - 1] = node_rank;
                 }
             }
         }
@@ -88,16 +88,16 @@ pub fn export_graph_data(path: &dyn AsRef<Path>, first_edge: EdgeIds, target_nod
     let num_nodes = first_edge.len() - 1;
 
     if let Ok(mut file) = output_file {
-        writeln!(&mut file, "p sp {} {}", first_edge.len(), target_node.len()).unwrap();
+        writeln!(&mut file, "p sp {} {}", num_nodes, target_node.len()).unwrap();
 
         for node_id in 0..num_nodes {
             for edge_id in first_edge[node_id]..first_edge[node_id + 1] {
-                writeln!(&mut file, "a {} {} {}", node_id, target_node[edge_id as usize], weight[edge_id as usize]).unwrap();
+                writeln!(&mut file, "a {} {} {}", node_id + 1, target_node[edge_id as usize] + 1, weight[edge_id as usize]).unwrap();
             }
         }
 
         for node_id in 0..num_nodes {
-            writeln!(&mut file, "r {} {}", node_id, rank[node_id]).unwrap();
+            writeln!(&mut file, "r {} {}", node_id + 1, rank[node_id]).unwrap();
         }
     }
 }
