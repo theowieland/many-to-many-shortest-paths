@@ -11,8 +11,10 @@ I have replaced these parts in order to avoid any copyright infringement.
 Graphs can be preprocessed/contracted in the following way:
 The input file must be given in the same format as used by the DIMACS challenge (http://users.diag.uniroma1.it/challenge9/download.shtml)
 Addtionally, contracted/exported graphs also contain an additional line that states the rank for each node id (line starts with r)
-```
+
+```rust
 let input_path = Path::new("path_to_input_file");
+let output_path = Path::new("path_to_store_contracted_graph");
 
 // load the graph data
 match io::read_graph_data(&input_path) {
