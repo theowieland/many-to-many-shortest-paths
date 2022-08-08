@@ -1,0 +1,48 @@
+p sp 10 26
+
+c node 1 = Berlin
+c node 2 = Madrid
+c node 3 = Rome
+c node 4 = Bucharest
+c node 5 = Paris
+c node 6 = Vienna
+c node 7 = Hamburg
+c node 8 = Warsaw
+c node 9 = Budapest
+c node 10 = Barcelona
+
+a 1 5 878
+a 1 6 524
+a 1 7 255
+a 1 8 516
+
+a 2 10 505
+
+a 3 6 764
+
+a 4 9 640
+
+a 5 1 878
+a 5 6 1034
+a 5 7 746
+a 5 10 831
+
+a 6 1 524
+a 6 3 764
+a 6 5 1034
+a 6 9 217
+a 6 10 1349
+
+a 7 1 255
+a 7 5 746
+
+a 8 1 516
+a 8 9 546
+
+a 9 4 640
+a 9 6 217
+a 9 8 546
+
+a 10 2 505
+a 10 5 831
+a 10 6 1349

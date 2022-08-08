@@ -1,13 +1,12 @@
 use std::path::Path;
-use rand::Rng;
-use shortest_path_algorithms::{utils::{io, measure_time, remove_unecessary_arcs, create_restricted_graph}, graph_representation::GraphArray, contraction_hierarchies::contract_graph, graph_permutations::{create_rank_permutation, apply_permutation}, many_to_many::{rphast_simd::SIMDRPHAST, many_to_many_algorithm::ManyToManyAlgorithm}, types::NodeIds};
+use shortest_path_algorithms::{utils::{io, measure_time, remove_unecessary_arcs, create_restricted_graph}, graph_representation::GraphArray, contraction_hierarchies::contract_graph, many_to_many::{rphast_simd::SIMDRPHAST, many_to_many_algorithm::ManyToManyAlgorithm}, types::NodeIds};
 
 fn main() {
-    let input_path = Path::new("/users/theo/Downloads/USA-road-t.CAL.gr");
-    let output_path = Path::new("users/theo/Downloads/contracted_graph_output.CAL.gr");
+    let input_path = Path::new("./graphs/europe_biggest_cities.txt");
+    let output_path = Path::new("./graphs/europe_biggest_cities_contracted.txt");
 
     contraction_example(&input_path, &output_path);
-    shortest_path_example(&input_path);
+    shortest_path_example(&output_path);
 }
 
 fn contraction_example(input_path: &dyn AsRef<Path>, output_path: &dyn AsRef<Path>) {
@@ -29,12 +28,6 @@ fn contraction_example(input_path: &dyn AsRef<Path>, output_path: &dyn AsRef<Pat
 
             let (contracted_first_edge, contracted_target_node, contracted_weight, contracted_rank) = contracted_graph;
 
-            // rename node ids so that each node id is equal to its rank
-            let num_nodes = contracted_first_edge.len() - 1;
-            let rank_permutation = create_rank_permutation(num_nodes, &contracted_rank);
-
-            let (contracted_first_edge, contracted_target_node, contracted_weight, contracted_rank) = apply_permutation(&rank_permutation, &contracted_first_edge, &contracted_target_node, &contracted_weight, &contracted_rank);
-
             // store result graph
             io::export_graph_data(&output_path, contracted_first_edge, contracted_target_node, contracted_weight, contracted_rank);
         },
@@ -51,13 +44,24 @@ fn shortest_path_example(input_path: &dyn AsRef<Path>) {
 
             let mut algorithm = SIMDRPHAST::new(&fwd_first_edge, &fwd_target_node, &fwd_weight, &bwd_first_edge, &bwd_source_node, &bwd_weight, &rank);
             
-            let num_nodes = rank.len() as u32;
-            let mut rng = rand::thread_rng();
-            let sources: NodeIds = (0..100).map(|_| rng.gen_range(0..num_nodes)).collect();
-            let targets: NodeIds = (0..100).map(|_| rng.gen_range(0..num_nodes)).collect();
+            let ordered_city_names = ["berlin", "madrid", "rome", "bucharest", "paris", "vienna", "hamburg", "warsaw", "budapest", "barcelona"];
+
+            let sources: NodeIds = (0..10).collect();
+            let targets: NodeIds = (0..10).collect();
 
             algorithm.calculate(&sources, &targets);
-            println!("shortest path distances: {:?}", algorithm.get_distance_table().data);
+
+            for source_index in 0..sources.len() {
+                for target_index in 0..targets.len() {
+                    println!("shortest path distances from {} to {}: {}", 
+                        ordered_city_names[sources[source_index] as usize], 
+                        ordered_city_names[targets[target_index] as usize], 
+                        algorithm.get_distance_table().get(source_index, target_index)
+                    );
+                }
+            }
+
+            println!("{:?}", algorithm.get_distance_table().data);
         },
         None => println!("unable to read the given file!"),
     }   
