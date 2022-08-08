@@ -1,8 +1,8 @@
 use crate::types::*;
 use crate::graph_algorithms::DijkstraState;
-use crate::data_structures::{ArrayStructure, ValidFlags, Matrix, ResettableArray};
 use crate::many_to_many::many_to_many_algorithm::ManyToManyAlgorithm;
 use crate::utils::binary_heap::MinBinaryHeap;
+use crate::utils::data_structures::{ValidFlags, ResettableArray, Matrix, ArrayStructure};
 
 use super::many_to_many_utils::convert_to_arclist;
 

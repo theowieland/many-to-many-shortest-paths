@@ -1,5 +1,4 @@
-use crate::types::*;
-use crate::data_structures::Matrix;
+use crate::{types::*, utils::data_structures::Matrix};
 
 /// a many to many algorith is able to compute shortest path distances between a given set of sources and targets
 pub trait ManyToManyAlgorithm {

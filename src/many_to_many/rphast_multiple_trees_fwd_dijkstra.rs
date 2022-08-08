@@ -1,10 +1,12 @@
 use crate::graph_algorithms::DijkstraState;
 use crate::types::*;
-use crate::data_structures::*;
 use crate::many_to_many::many_to_many_algorithm::ManyToManyAlgorithm;
 use crate::many_to_many::many_to_many_utils::*;
 use crate::many_to_many::rphast::target_selection;
 use crate::utils::binary_heap::MinBinaryHeap;
+use crate::utils::data_structures::Matrix;
+use crate::utils::data_structures::ResettableArray;
+use crate::utils::data_structures::ValidFlags;
 
 use super::rphast_utils::rphast_downward;
 use super::rphast_utils::rphast_forward_dijkstra;

@@ -1,11 +1,12 @@
 use core_simd::SimdPartialOrd;
 use core_simd::u32x16;
 use crate::types::*;
-use crate::data_structures::*;
 use crate::many_to_many::many_to_many_algorithm::ManyToManyAlgorithm;
 use crate::many_to_many::many_to_many_utils::*;
 use crate::many_to_many::rphast::target_selection;
 use crate::utils::binary_heap::MinBinaryHeap;
+use crate::utils::data_structures::Matrix;
+use crate::utils::data_structures::ValidFlags;
 
 type WeightBatchDataType = u32x16;
 pub const LANE_COUNT: usize = 16; // has to match the lane count for the type above

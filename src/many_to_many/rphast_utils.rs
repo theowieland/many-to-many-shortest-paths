@@ -1,4 +1,4 @@
-use crate::{types::{NodeId, EdgeId, Weight, INFINITY}, data_structures::{ValidFlags, ResettableArray, ArrayStructure}, graph_algorithms::DijkstraState, utils::binary_heap::MinBinaryHeap};
+use crate::{types::{NodeId, EdgeId, Weight, INFINITY}, graph_algorithms::DijkstraState, utils::{binary_heap::MinBinaryHeap, data_structures::{ResettableArray, ValidFlags, ArrayStructure}}};
 
 use super::many_to_many_utils::RankDijkstraState;
 

@@ -1,8 +1,9 @@
 use crate::types::*;
-use crate::data_structures::*;
 use crate::many_to_many::many_to_many_algorithm::ManyToManyAlgorithm;
 use crate::many_to_many::many_to_many_utils::*;
 use crate::utils::binary_heap::MinBinaryHeap;
+use crate::utils::data_structures::Matrix;
+use crate::utils::data_structures::ValidFlags;
 use super::rphast::target_selection_decreasing_rank;
 use super::rphast_utils::rphast_downward;
 use super::rphast_utils::rphast_forward_rank;

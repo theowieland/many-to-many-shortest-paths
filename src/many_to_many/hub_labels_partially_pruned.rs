@@ -1,9 +1,9 @@
 use crate::graph_algorithms::DijkstraState;
 use crate::types::*;
-use crate::data_structures::{ValidFlags, Matrix, ArrayStructure};
 use crate::many_to_many::many_to_many_algorithm::ManyToManyAlgorithm;
 use crate::many_to_many::many_to_many_utils::*;
 use crate::utils::binary_heap::MinBinaryHeap;
+use crate::utils::data_structures::{ValidFlags, Matrix, ArrayStructure};
 
 pub struct HubLabelsPartiallyPruned {
     fwd_first_edge: Vec<EdgeId>,

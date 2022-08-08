@@ -1,9 +1,9 @@
-use crate::bucket_containers::BucketContainer;
 use crate::types::*;
-use crate::data_structures::Matrix;
 use crate::many_to_many::many_to_many_algorithm::ManyToManyAlgorithm;
 use crate::many_to_many::many_to_many_utils::*;
 use crate::utils::binary_heap::MinBinaryHeap;
+use crate::utils::bucket_containers::BucketContainer;
+use crate::utils::data_structures::Matrix;
 use super::advanced_bucket::populate_buckets_pruing_fwd;
 use super::bucket::query_no_stopping;
 

@@ -1,8 +1,6 @@
 use core_simd::{u32x16, SimdPartialOrd};
-
-use crate::bucket_containers::BucketContainer;
-use crate::types::*;
-use crate::data_structures::{Matrix, ValidFlags, ArrayStructure};
+use crate::utils::data_structures::{ValidFlags, Matrix, ArrayStructure};
+use crate::{types::*, utils::bucket_containers::BucketContainer};
 use crate::many_to_many::many_to_many_algorithm::ManyToManyAlgorithm;
 use crate::many_to_many::many_to_many_utils::*;
 use crate::utils::binary_heap::MinBinaryHeap;

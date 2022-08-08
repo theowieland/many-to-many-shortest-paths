@@ -1,7 +1,7 @@
-use crate::bucket_containers::{BucketContainer, PreparationAccessBucketContainer};
 use crate::types::*;
-use crate::data_structures::Matrix;
 use crate::utils::binary_heap::MinBinaryHeap;
+use crate::utils::bucket_containers::{BucketContainer, PreparationAccessBucketContainer};
+use crate::utils::data_structures::Matrix;
 use std::cmp::{self, min};
 use crate::many_to_many::many_to_many_algorithm::ManyToManyAlgorithm;
 use crate::many_to_many::many_to_many_utils::*;

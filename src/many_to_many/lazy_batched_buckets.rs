@@ -1,6 +1,5 @@
-use crate::bucket_containers::BucketContainer;
-use crate::types::*;
-use crate::data_structures::{Matrix, LazyBatchedValidFlags};
+use crate::utils::data_structures::{LazyBatchedValidFlags, Matrix};
+use crate::{types::*, utils::bucket_containers::BucketContainer};
 use crate::utils::binary_heap::MinBinaryHeap;
 use std::cmp::min;
 use crate::many_to_many::many_to_many_algorithm::ManyToManyAlgorithm;

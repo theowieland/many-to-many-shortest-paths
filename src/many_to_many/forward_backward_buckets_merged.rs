@@ -1,9 +1,9 @@
-use crate::bucket_containers::BucketContainer;
 use crate::types::*;
-use crate::data_structures::{Matrix, EmptyValidFlags};
 use crate::many_to_many::many_to_many_algorithm::ManyToManyAlgorithm;
 use crate::many_to_many::many_to_many_utils::*;
 use crate::utils::binary_heap::MinBinaryHeap;
+use crate::utils::bucket_containers::BucketContainer;
+use crate::utils::data_structures::{Matrix, EmptyValidFlags};
 
 use super::advanced_bucket::populate_buckets_pruing_fwd;
 
@@ -22,7 +22,6 @@ pub struct ForwardBackwardBucketsMergedManyToMany {
     up_nodes: Vec<Vec<(NodeId, Weight)>>,
     modified_up_nodes: Vec<NodeId>,
     distance_table: Matrix<Weight>,
-
     mutual_buckets: EmptyValidFlags
 }
 

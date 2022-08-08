@@ -1,4 +1,5 @@
-use crate::data_structures::EmptyValidFlags;
+use super::data_structures::EmptyValidFlags;
+
 
 pub struct BucketContainer<T: Copy + Clone> {
     buckets: Vec<Vec<T>>,

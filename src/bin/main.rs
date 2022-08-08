@@ -1,5 +1,5 @@
 use std::path::Path;
-use shortest_path_algorithms::{utils::{io, measure_time, remove_unecessary_arcs, create_restricted_graph}, graph_representation::GraphArray, contraction_hierarchies::contract_graph, many_to_many::{rphast_simd::SIMDRPHAST, many_to_many_algorithm::ManyToManyAlgorithm}, types::NodeIds};
+use shortest_path_algorithms::{utils::{io, measure_time, remove_unecessary_arcs, create_restricted_graph}, graph_representation::GraphArray, many_to_many::{rphast_simd::SIMDRPHAST, many_to_many_algorithm::ManyToManyAlgorithm}, types::NodeIds, contraction::contraction_hierarchies::contract_graph};
 
 fn main() {
     let input_path = Path::new("./graphs/europe_biggest_cities.txt");

@@ -1,8 +1,7 @@
 use std::cmp::min;
-
-use crate::data_structures::{ValidFlags, ArrayStructure};
 use crate::types::*;
 use crate::utils::binary_heap::{HeapElement, MinBinaryHeap};
+use crate::utils::data_structures::{ValidFlags, ArrayStructure};
 use crate::utils::depth_first_search;
 
 #[derive(Copy, Clone, Eq, PartialEq, Debug, Ord, PartialOrd)]

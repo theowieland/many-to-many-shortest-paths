@@ -7,7 +7,9 @@ use rand::thread_rng;
 use rand::seq::SliceRandom;
 use rand::Rng;
 use std::path::Path;
-use crate::data_structures::{ArrayStructure, ValidFlags};
+use super::data_structures::ArrayStructure;
+use super::data_structures::ValidFlags;
+
 
 /// used to store reusable objects used by the node picker
 pub struct NodePicker {

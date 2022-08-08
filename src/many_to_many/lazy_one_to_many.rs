@@ -1,7 +1,7 @@
 use crate::types::*;
 use crate::graph_algorithms::DijkstraState;
-use crate::data_structures::{ResettableArray, ArrayStructure, ValidFlags, Matrix};
 use crate::utils::binary_heap::MinBinaryHeap;
+use crate::utils::data_structures::{Matrix, ResettableArray, ValidFlags, ArrayStructure};
 use std::cmp;
 use crate::many_to_many::many_to_many_algorithm::ManyToManyAlgorithm;
 

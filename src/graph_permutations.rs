@@ -1,9 +1,9 @@
 use crate::types::*;
+use crate::utils::data_structures::EmptyValidFlags;
 use std::cmp::max;
 use std::cmp::Ordering;
 use rand::thread_rng;
 use rand::seq::SliceRandom;
-use crate::data_structures::EmptyValidFlags;
 
 /// converts an array of unique node ids to their respective ranks
 ///

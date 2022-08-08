@@ -1,8 +1,10 @@
-use crate::contraction_hierarchies::ContractionHierarchiesGraph;
 use crate::types::*;
-use crate::data_structures::{ValidFlags, ArrayStructure};
 use crate::utils::binary_heap::HeapElement;
 use crate::utils::binary_heap::MinBinaryHeap;
+use crate::utils::data_structures::ArrayStructure;
+use crate::utils::data_structures::ValidFlags;
+
+use super::contraction_hierarchies::ContractionHierarchiesGraph;
 
 const WITNESS_SEARCH_TIMEOUT: usize = 50;
 

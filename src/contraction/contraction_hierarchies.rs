@@ -1,6 +1,8 @@
 use std::cmp::max;
 
-use crate::{graph_representation::Graph, utils::binary_heap::{HeapElement, MinBinaryHeap}, types::{NodeId, Weight, Ranks, EdgeIds, NodeIds, Weights}, witness_search::WitnessSearch};
+use crate::{graph_representation::Graph, utils::binary_heap::{HeapElement, MinBinaryHeap}, types::{NodeId, Weight, Ranks, EdgeIds, NodeIds, Weights}};
+
+use super::witness_search::WitnessSearch;
 
 pub struct ContractionHierarchiesGraph {
     pub remaining_in_edges: Vec<Vec<(NodeId, Weight)>>,

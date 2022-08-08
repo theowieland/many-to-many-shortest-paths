@@ -1,11 +1,14 @@
 use std::time::{Duration, Instant};
 
 use crate::types::*;
-use crate::data_structures::{ValidFlags, ArrayStructure};
+
+use self::data_structures::{ValidFlags, ArrayStructure};
 
 pub mod binary_heap;
 pub mod io;
 pub mod node_picker;
+pub mod data_structures;
+pub mod bucket_containers;
 
 
 // removes all loops as well as duplicate arcs (only the arc with minimum weight remains)

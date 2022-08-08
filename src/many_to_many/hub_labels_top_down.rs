@@ -1,8 +1,8 @@
 use crate::types::*;
-use crate::data_structures::Matrix;
 use crate::many_to_many::many_to_many_algorithm::ManyToManyAlgorithm;
 use crate::many_to_many::many_to_many_utils::*;
 use crate::utils::binary_heap::MinBinaryHeap;
+use crate::utils::data_structures::Matrix;
 
 use super::hub_labels_partially_pruned::HubLabelsPartiallyPruned;
 

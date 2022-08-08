@@ -1,7 +1,7 @@
-use crate::bucket_containers::BucketContainer;
-use crate::types::*;
+use crate::utils::bucket_containers::BucketContainer;
+use crate::utils::data_structures::{Matrix, ArrayStructure, EmptyValidFlags, LazyMaxHeap};
+use crate::{types::*, utils::data_structures::ValidFlags};
 use crate::graph_algorithms::DijkstraState;
-use crate::data_structures::{ArrayStructure, ValidFlags, Matrix, LazyMaxHeap, EmptyValidFlags};
 use crate::many_to_many::many_to_many_algorithm::ManyToManyAlgorithm;
 use crate::utils::binary_heap::MinBinaryHeap;
 use super::many_to_many_utils::{convert_to_arclist, RankDijkstraState};
