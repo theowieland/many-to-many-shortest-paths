@@ -111,6 +111,29 @@ impl PriorityQueueNode {
     }
 }
 
+pub fn contract_graph_with_order(graph: &impl Graph, order: &[NodeId]) -> (EdgeIds, NodeIds, Weights, Ranks) {
+    let num_nodes = graph.node_ids().len();
+
+    let mut remaining_graph = ContractionHierarchiesGraph::new(graph);
+    let mut witness_search = WitnessSearch::new(num_nodes);
+
+    let mut num_contracted_nodes = 0;
+
+    for node_id in order {
+        let shortcuts = get_required_shortcuts(*node_id, &mut remaining_graph, &mut witness_search);
+
+        if num_contracted_nodes % 1000 == 0 {
+            println!("finished nodes: {} remaining nodes: {}, progress: {}%", num_contracted_nodes, num_nodes - num_contracted_nodes, (num_contracted_nodes as f64 / num_nodes as f64) * 100.0);
+        }
+        
+        contract_node(*node_id, shortcuts, &mut remaining_graph);
+        remaining_graph.node_rank[*node_id as usize] = num_contracted_nodes;
+        num_contracted_nodes += 1;
+    }
+
+    remaining_graph.export_result()
+}
+
 pub fn contract_graph(graph: &impl Graph) -> (EdgeIds, NodeIds, Weights, Ranks) {
     let num_nodes = graph.node_ids().len();
 
